@@ -1,0 +1,15 @@
+app:
+  env: development
+  port: 8080
+
+database:
+  host: test-msjx-mysql.ns-6x32d2ca.svc
+  port: 3306
+  user: root
+  password: "9zzxlppv"
+  name: msjx
+  max_conn: 20
+
+logging:
+  level: debug
+  path: ./logs
