@@ -3,10 +3,10 @@ app:
   port: 8080
 
 database:
-  host: test-msjx-mysql.ns-6x32d2ca.svc
+  host: localhost
   port: 3306
   user: root
-  password: "9zzxlppv"
+  password: "123456"
   name: msjx
   max_conn: 20
 
