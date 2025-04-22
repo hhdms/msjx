@@ -9,6 +9,9 @@ import (
 
 // RegisterRoutes 注册API路由
 func RegisterRoutes(r *gin.Engine) {
+	// 应用CORS中间件
+	r.Use(middleware.CORS())
+
 	// 创建认证控制器
 	authController := controllers.NewAuthController()
 
@@ -23,7 +26,7 @@ func RegisterRoutes(r *gin.Engine) {
 
 	// 需要认证的路由
 	authorized := r.Group("/")
-	authorized.Use(middleware.JWTAuth())
+	// authorized.Use(middleware.JWTAuth())
 	{
 		// 创建部门控制器
 		deptController := controllers.NewDeptController()
