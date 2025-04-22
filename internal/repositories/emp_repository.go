@@ -11,6 +11,7 @@ import (
 type EmpRepository interface {
 	FindPage(query *models.EmpQuery) (*models.EmpPageResult, error)
 	FindByID(id int) (*models.Emp, error)
+	FindByUsername(username string) (*models.Emp, error)
 	Create(emp *models.Emp) error
 	Update(emp *models.Emp) error
 	Delete(ids []int) error
@@ -94,6 +95,25 @@ func (r *EmpRepositoryImpl) FindByID(id int) (*models.Emp, error) {
 	// 查询工作经历
 	if err := app.DB.Where("emp_id = ?", id).Find(&emp.ExprList).Error; err != nil {
 		return nil, err
+	}
+
+	return &emp, nil
+}
+
+// FindByUsername 根据用户名查询员工
+func (r *EmpRepositoryImpl) FindByUsername(username string) (*models.Emp, error) {
+	var emp models.Emp
+	result := app.DB.Where("username = ?", username).First(&emp)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	// 查询部门名称
+	if emp.DeptID > 0 {
+		var dept models.Dept
+		if err := app.DB.Select("name").First(&dept, emp.DeptID).Error; err == nil {
+			emp.DeptName = dept.Name
+		}
 	}
 
 	return &emp, nil

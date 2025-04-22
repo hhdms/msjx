@@ -1,10 +1,13 @@
 package services
 
 import (
+	"errors"
+
 	"gorm.io/gorm"
 
 	"github.com/hhdms/msjx/internal/models"
 	"github.com/hhdms/msjx/internal/repositories"
+	"github.com/hhdms/msjx/internal/utils"
 )
 
 // EmpService 员工服务接口
@@ -15,6 +18,7 @@ type EmpService interface {
 	CreateEmp(emp *models.Emp) error
 	UpdateEmp(emp *models.Emp) error
 	DeleteEmp(ids []int) error
+	Login(req *models.LoginRequest) (*models.LoginResponse, error)
 }
 
 // EmpServiceImpl 员工服务实现
@@ -80,4 +84,37 @@ func (s *EmpServiceImpl) UpdateEmp(emp *models.Emp) error {
 // DeleteEmp 删除员工
 func (s *EmpServiceImpl) DeleteEmp(ids []int) error {
 	return s.empRepo.Delete(ids)
+}
+
+// Login 员工登录
+func (s *EmpServiceImpl) Login(req *models.LoginRequest) (*models.LoginResponse, error) {
+	// 根据用户名查询员工信息
+	emp, err := s.empRepo.FindByUsername(req.Username)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.New("用户名或密码错误")
+		}
+		return nil, err
+	}
+
+	// 检查密码是否正确
+	if emp.Password != req.Password {
+		return nil, errors.New("用户名或密码错误")
+	}
+
+	// 生成JWT令牌
+	token, err := utils.GenerateToken(emp.ID, emp.Username)
+	if err != nil {
+		return nil, errors.New("生成令牌失败")
+	}
+
+	// 构建登录响应
+	loginResp := &models.LoginResponse{
+		ID:       emp.ID,
+		Username: emp.Username,
+		Name:     emp.Name,
+		Token:    token,
+	}
+
+	return loginResp, nil
 }
