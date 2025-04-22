@@ -3,8 +3,8 @@ package repositories
 import (
 	"gorm.io/gorm"
 
-	"main/internal/app"
-	"main/internal/models"
+	"github.com/hhdms/msjx/internal/app"
+	"github.com/hhdms/msjx/internal/models"
 )
 
 // EmpRepository 员工仓库接口
@@ -136,7 +136,9 @@ func (r *EmpRepositoryImpl) Update(emp *models.Emp) error {
 
 			// 添加新的工作经历
 			for i := range emp.ExprList {
+				// 设置员工ID并清除工作经历ID，让数据库自动生成ID
 				emp.ExprList[i].EmpID = emp.ID
+				emp.ExprList[i].ID = 0 // 重置ID为0，让数据库自动生成新的ID
 				if err := tx.Create(&emp.ExprList[i]).Error; err != nil {
 					return err
 				}

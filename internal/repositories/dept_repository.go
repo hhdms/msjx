@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"main/internal/app"
-	"main/internal/models"
+	"github.com/hhdms/msjx/internal/app"
+	"github.com/hhdms/msjx/internal/models"
 )
 
 // DeptRepository 部门仓库接口

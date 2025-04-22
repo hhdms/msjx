@@ -1,8 +1,8 @@
 package services
 
 import (
-	"main/internal/models"
-	"main/internal/repositories"
+	"github.com/hhdms/msjx/internal/models"
+	"github.com/hhdms/msjx/internal/repositories"
 )
 
 // DeptService 部门服务接口

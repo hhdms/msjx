@@ -3,8 +3,8 @@ package services
 import (
 	"gorm.io/gorm"
 
-	"main/internal/models"
-	"main/internal/repositories"
+	"github.com/hhdms/msjx/internal/models"
+	"github.com/hhdms/msjx/internal/repositories"
 )
 
 // EmpService 员工服务接口
@@ -41,12 +41,12 @@ func (s *EmpServiceImpl) GetAllEmps() ([]models.Emp, error) {
 		Page:     1,
 		PageSize: 1000, // 设置一个足够大的值以获取所有记录
 	}
-	
+
 	result, err := s.empRepo.FindPage(query)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return result.Rows, nil
 }
 

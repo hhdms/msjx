@@ -5,10 +5,10 @@ import (
 	"strconv"
 	"strings"
 
-	"main/internal/models"
-	"main/internal/services"
-
 	"github.com/gin-gonic/gin"
+
+	"github.com/hhdms/msjx/internal/models"
+	"github.com/hhdms/msjx/internal/services"
 )
 
 // EmpController 员工控制器
@@ -67,7 +67,7 @@ func (c *EmpController) GetEmpByID(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, models.NewErrorResponse("无效的员工ID"))
 		return
 	}
-	
+
 	emp, err := c.empService.GetEmpByID(id)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, models.NewErrorResponse("员工不存在"))
@@ -101,6 +101,9 @@ func (c *EmpController) UpdateEmp(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, models.NewErrorResponse("无效的请求参数"))
 		return
 	}
+
+	// 处理image字段中可能存在的反引号
+	emp.Image = strings.Trim(emp.Image, " `")
 
 	err := c.empService.UpdateEmp(&emp)
 	if err != nil {

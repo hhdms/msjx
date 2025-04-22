@@ -2,7 +2,8 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"main/internal/controllers"
+	
+	"github.com/hhdms/msjx/internal/controllers"
 )
 
 // RegisterRoutes 注册API路由

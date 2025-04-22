@@ -4,8 +4,9 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"main/internal/api/v1"
-	"main/internal/app"
+
+	"github.com/hhdms/msjx/internal/api/v1"
+	"github.com/hhdms/msjx/internal/app"
 )
 
 func main() {

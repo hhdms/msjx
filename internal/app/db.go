@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 
-	"main/internal/models"
+	"github.com/hhdms/msjx/internal/models"
 )
 
 // DB 全局数据库连接
@@ -47,7 +47,7 @@ func InitDB() {
 	sqlDB.SetMaxOpenConns(AppConfig.Database.MaxConn)
 
 	// 自动迁移表结构
-	err = DB.AutoMigrate(&models.Dept{})
+	err = DB.AutoMigrate(&models.Dept{}, &models.Emp{}, &models.EmpExpr{})
 	if err != nil {
 		log.Fatalf("自动迁移表结构失败: %v", err)
 	}

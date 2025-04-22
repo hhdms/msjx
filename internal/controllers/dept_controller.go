@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"main/internal/models"
-	"main/internal/services"
-
 	"github.com/gin-gonic/gin"
+
+	"github.com/hhdms/msjx/internal/models"
+	"github.com/hhdms/msjx/internal/services"
 )
 
 // DeptController 部门控制器

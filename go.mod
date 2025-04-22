@@ -1,4 +1,4 @@
-module main
+module github.com/hhdms/msjx
 
 go 1.24.2
 
