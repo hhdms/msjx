@@ -81,13 +81,18 @@ func (c *EmpController) GetEmpByID(ctx *gin.Context) {
 func (c *EmpController) CreateEmp(ctx *gin.Context) {
 	var emp models.Emp
 	if err := ctx.ShouldBindJSON(&emp); err != nil {
-		ctx.JSON(http.StatusBadRequest, models.NewErrorResponse("无效的请求参数"))
+		ctx.JSON(http.StatusBadRequest, models.NewErrorResponse("无效的请求参数: "+err.Error()))
 		return
 	}
 
+	// 处理image字段中可能存在的反引号
+	emp.Image = strings.ReplaceAll(emp.Image, "`", "")
+	// 去除image字段中可能存在的多余空格
+	emp.Image = strings.TrimSpace(emp.Image)
+
 	err := c.empService.CreateEmp(&emp)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, models.NewErrorResponse("创建员工失败"))
+		ctx.JSON(http.StatusInternalServerError, models.NewErrorResponse("创建员工失败: "+err.Error()))
 		return
 	}
 

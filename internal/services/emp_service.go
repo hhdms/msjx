@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"fmt"
 
 	"gorm.io/gorm"
 
@@ -61,6 +62,12 @@ func (s *EmpServiceImpl) GetEmpByID(id int) (*models.Emp, error) {
 
 // CreateEmp 创建员工
 func (s *EmpServiceImpl) CreateEmp(emp *models.Emp) error {
+	// 检查手机号是否已存在
+	existEmp, err := s.empRepo.FindByPhone(emp.Phone)
+	if err == nil && existEmp != nil {
+		return fmt.Errorf("手机号 %s 已被使用，请更换其他手机号", emp.Phone)
+	}
+
 	return s.empRepo.Create(emp)
 }
 

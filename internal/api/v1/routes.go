@@ -26,7 +26,7 @@ func RegisterRoutes(r *gin.Engine) {
 
 	// 需要认证的路由
 	authorized := r.Group("/")
-	// authorized.Use(middleware.JWTAuth())
+	authorized.Use(middleware.JWTAuth())
 	{
 		// 创建部门控制器
 		deptController := controllers.NewDeptController()

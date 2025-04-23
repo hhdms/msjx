@@ -12,6 +12,7 @@ type EmpRepository interface {
 	FindPage(query *models.EmpQuery) (*models.EmpPageResult, error)
 	FindByID(id int) (*models.Emp, error)
 	FindByUsername(username string) (*models.Emp, error)
+	FindByPhone(phone string) (*models.Emp, error)
 	Create(emp *models.Emp) error
 	Update(emp *models.Emp) error
 	Delete(ids []int) error
@@ -116,6 +117,16 @@ func (r *EmpRepositoryImpl) FindByUsername(username string) (*models.Emp, error)
 		}
 	}
 
+	return &emp, nil
+}
+
+// FindByPhone 根据手机号查询员工
+func (r *EmpRepositoryImpl) FindByPhone(phone string) (*models.Emp, error) {
+	var emp models.Emp
+	result := app.DB.Where("phone = ?", phone).First(&emp)
+	if result.Error != nil {
+		return nil, result.Error
+	}
 	return &emp, nil
 }
 
